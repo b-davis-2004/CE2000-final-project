@@ -203,10 +203,22 @@ function drawChart() {
       labels: ["Stocked", "Still Needed"],
       datasets: [{
         data: [displayedStock, displayedNeeded],
-        backgroundColor: ["#0d6efd", "#dee2e6"]
+        backgroundColor: ["#0d6efd", "#dee2e6"],
+        hoverOffset: 6
       }]
     },
-    options: { plugins: { legend: { position: "bottom" } },  }
+    options: {
+      plugins: {
+        legend: { position: "bottom" },
+        tooltip: {
+          //This is altering the labels when hovering over donought
+          //so that it doesn't display the total stocked and still needed counts anymore
+          callbacks: {
+            label: function () { return ''; }
+          }
+        }
+      }
+    }
   });
 }
 
