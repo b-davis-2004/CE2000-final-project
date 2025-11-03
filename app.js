@@ -197,6 +197,26 @@ function drawChart() {
 
   // Aesthetics of the chart - legend, colors, labels
   if (chart) chart.destroy();
+
+  const image = new Image();
+  image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
+
+  //this plugin is specifically for the image in the center of the stock donut chart
+  const plugin = {
+    id: 'prettyDoughnut',
+    beforeDraw: (chartInstance) => {
+      if (image.complete) {
+        const ctx = chartInstance.ctx;
+        const { top, left, width, height } = chartInstance.chartArea;
+        const x = left + width / 2 - image.width / 2;
+        const y = top + height / 2 - image.height / 2;
+        ctx.drawImage(image, x, y);
+      } else {
+        image.onload = () => chartInstance.draw();
+      }
+    }
+  };
+
   chart = new Chart(ctx, {
     type: "doughnut",
     data: {
@@ -218,7 +238,8 @@ function drawChart() {
           }
         }
       }
-    }
+    },
+    plugins: [plugin]
   });
 }
 
@@ -289,6 +310,7 @@ function showAddModal(editIndex = null) {
     setTimeout(() => modalHTML.remove(), 500);
   });
 }
+
 
 // Edit item handler
 function editItem(index) { showAddModal(index); }
