@@ -145,6 +145,7 @@ function renderHome(container) {
     alert("Inventory saved! It will stay the same even after reloading.");
   });
 
+  //Reset inventory button handler - restores to default values
   document.getElementById("resetInventoryBtn").addEventListener("click", () => {
     if (confirm("Are you sure you want to reset to the original inventory?")) {
       localStorage.removeItem("babyInventory");
@@ -194,6 +195,7 @@ function drawChart() {
   const displayedStock = Math.min(totalHave, totalNeed);
   const displayedNeeded = Math.max(totalNeed - totalHave, 0);
 
+  // Aesthetics of the chart - legend, colors, labels
   if (chart) chart.destroy();
   chart = new Chart(ctx, {
     type: "doughnut",
