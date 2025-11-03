@@ -182,9 +182,17 @@ function updateInventoryTable() {
 
 // Draw doughnut chart
 function drawChart() {
-  const totalHave = inventory.reduce((sum, i) => sum + i.have, 0);
+
+  //variables to define stock and what's still needed for the donught chart
+  //included logic so that if one category is over stocked it doesn't inflate the visual
+  //an excess of stock in one category doesn't make the overall look more complete than reality
+  
   const totalNeed = inventory.reduce((sum, i) => sum + i.need, 0);
+  const totalHave = inventory.reduce((sum, i) => sum + Math.min(i.have, i.need), 0);
   const ctx = document.getElementById("stockChart").getContext("2d");
+
+  const displayedStock = Math.min(totalHave, totalNeed);
+  const displayedNeeded = Math.max(totalNeed - totalHave, 0);
 
   if (chart) chart.destroy();
   chart = new Chart(ctx, {
@@ -192,11 +200,11 @@ function drawChart() {
     data: {
       labels: ["Stocked", "Still Needed"],
       datasets: [{
-        data: [totalHave, Math.max(totalNeed - totalHave, 0)],
+        data: [displayedStock, displayedNeeded],
         backgroundColor: ["#0d6efd", "#dee2e6"]
       }]
     },
-    options: { plugins: { legend: { position: "bottom" } } }
+    options: { plugins: { legend: { position: "bottom" } },  }
   });
 }
 
