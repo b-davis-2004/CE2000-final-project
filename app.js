@@ -186,7 +186,7 @@ function drawChart() {
   //variables to define stock and what's still needed for the donught chart
   //included logic so that if one category is over stocked it doesn't inflate the visual
   //an excess of stock in one category doesn't make the overall look more complete than reality
-  
+
   const totalNeed = inventory.reduce((sum, i) => sum + i.need, 0);
   const totalHave = inventory.reduce((sum, i) => sum + Math.min(i.have, i.need), 0);
   const ctx = document.getElementById("stockChart").getContext("2d");
@@ -278,7 +278,3 @@ function showAddModal(editIndex = null) {
 
 // Edit item handler
 function editItem(index) { showAddModal(index); }
-
-
-// Initial render
-renderHome(document.getElementById("app"));
